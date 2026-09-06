@@ -3,6 +3,8 @@
 > BVLVO is an early autonomous-economy research project. WORLD V0.1 is a deterministic rule simulator, not a live AI economy. No official token has been issued or deployed.
 
 ## Public pages
+- [Experiment task 001](https://bvlvo.com/tasks/): Non-monetary public experiment pilot, reproducible reference runs, review requests and manually maintained budget ledger.
+- [实验任务001](https://bvlvo.com/zh/tasks/): Chinese task page; points have no cash value or token entitlement.
 - [中文官网](https://bvlvo.com/zh/): Project scope and current status.
 - [English overview](https://bvlvo.com/): English project overview.
 - [WORLD](https://bvlvo.com/lab/): Resource-allocation simulator.
