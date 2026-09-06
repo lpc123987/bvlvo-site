@@ -1,3 +1,7 @@
 https://www.bvlvo.com/* https://bvlvo.com/:splat 301
 /en / 301
 /en/ / 301
+
+/zh / 301
+/zh/ / 301
+/zh/* /:splat 301
