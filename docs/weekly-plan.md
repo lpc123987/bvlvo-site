@@ -1,3 +1,5 @@
+> Historical research proposal / 早期研究档案。Current project paper / 当前项目说明书: https://bvlvo.com/whitepaper/ . This file is not a current issuance commitment.
+
 # BVLVO WORLD：每周迭代计划
 
 版本：V0.1 / 2026-09-06。本文是开发计划，不是已完成能力或发布日期承诺。

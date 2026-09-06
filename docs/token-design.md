@@ -1,3 +1,5 @@
+> Historical research proposal / 早期研究档案。Current project paper / 当前项目说明书: https://bvlvo.com/whitepaper/ . This file is not a current issuance commitment.
+
 # BVLVO WORLD 代币机制设计 V0.1
 
 2026-09-06｜讨论与仿真方案｜未发行、未部署、未开放销售
