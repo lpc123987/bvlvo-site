@@ -1,14 +1,14 @@
 # BVLVO
 
-> BVLVO is a long-term community token project in preparation. Planned issuance: 2026-09-23, subject to required permissions and launch readiness. No official token contract, sale, purchase route or live holder governance exists. Ten years is an ambition, not a guarantee.
+> BVLVO is a long-term community token project in preparation. Planned issuance: 2026-09-23, subject to required permissions and launch readiness. V1 selects Base, ERC-20 with 18 decimals, a one-billion-token supply, zero public circulation at genesis, team releases at monthly anniversaries 13 through 60, and 2-of-3 reserve signing with an enforced 72-hour delay. These controls are not implemented. No official token contract, sale, purchase route or live holder governance exists. Ten years is an ambition, not a guarantee.
 
 ## Current proposal
-- [Overview](https://bvlvo.com/): Current project thesis and status.
-- [token](https://bvlvo.com/token/): A proposed transferable community token. Supply, allocation, rights and unresolved issuance decisions.
+- [Overview](https://bvlvo.com/): Current project thesis, issuance specification V1 and preparation status.
+- [token](https://bvlvo.com/token/): Issuance specification V1: Base, one billion BVLVO, zero public circulation at genesis, defined vesting and reserve controls. In preparation.
 - [governance](https://bvlvo.com/governance/): Simple participation, defined decision boundaries and transparent execution. Governance remains a proposal.
 - [treasury](https://bvlvo.com/treasury/): Separate cash, token allocations and test points. No invented balances or implied financial backing.
 - [development](https://bvlvo.com/development/): A ten-year ambition supported by staged decisions, evidence and honest progress reporting.
-- [whitepaper](https://bvlvo.com/whitepaper/): Working paper v0.3: community thesis, token design, governance boundaries and open questions.
+- [whitepaper](https://bvlvo.com/whitepaper/): Working paper v0.4: community thesis, token design, governance boundaries and open questions.
 - [disclosures](https://bvlvo.com/disclosures/): Read the limits of the BVLVO proposal, issuance status, project dependencies and website data practices.
 
 ## Language
