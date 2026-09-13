@@ -85,7 +85,17 @@
       'event ProxyCreation(address proxy,address singleton)'
     ];
     const $ = id => document.getElementById(id);
-    const state = { provider:null, signer:null, account:null, artifact:null, safeOk:false, plan:null };
+    const announcedProviders = [];
+    window.addEventListener('eip6963:announceProvider', event => {
+      const detail = event.detail;
+      if (detail?.provider && !announcedProviders.some(item => item.provider === detail.provider)) announcedProviders.push(detail);
+    });
+    window.dispatchEvent(new Event('eip6963:requestProvider'));
+    const injectedProvider = () => announcedProviders.find(item => item.info?.rdns === 'io.metamask')?.provider
+      || announcedProviders.find(item => item.info?.name?.toLowerCase().includes('metamask'))?.provider
+      || window.ethereum?.providers?.find(provider => provider.isMetaMask)
+      || window.ethereum;
+    const state = { provider:null, walletProvider:null, signer:null, account:null, artifact:null, safeOk:false, plan:null, eventsBound:false };
     const log = data => { $('log').textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2); };
     const checks = (id, rows) => { $(id).innerHTML = rows.map(([ok,text]) => '<li class="'+(ok?'pass':'fail')+'">'+(ok?'✓ ':'✕ ')+text+'</li>').join(''); };
     const address = (id) => ethers.getAddress($(id).value.trim());
@@ -93,27 +103,33 @@
     function invalidate(){state.safeOk=false;state.plan=null;$('prepare').disabled=true;$('deploy').disabled=true;}
     ['owner1','owner2','owner3','beneficiary','safe'].forEach(id=>$(id).addEventListener('input',invalidate));
     async function requireNetwork(){
-      if(!window.ethereum) throw new Error('MetaMask was not detected.');
-      const hex = await window.ethereum.request({method:'eth_chainId'});
+      const walletProvider=injectedProvider();
+      if(!walletProvider) throw new Error('MetaMask was not detected. Allow the MetaMask extension to access bvlvo.com, then reload.');
+      const hex = await walletProvider.request({method:'eth_chainId'});
       if(BigInt(hex)!==CHAIN_ID) throw new Error('Wrong network. Switch MetaMask to Base Sepolia (chain ID 84532).');
+      return walletProvider;
     }
     async function connect(){
-      if(!window.ethereum) throw new Error('MetaMask was not detected.');
-      await window.ethereum.request({method:'eth_requestAccounts'});
+      const walletProvider=injectedProvider();
+      if(!walletProvider) throw new Error('MetaMask was not detected. Allow the MetaMask extension to access bvlvo.com, then reload.');
+      await walletProvider.request({method:'eth_requestAccounts'});
       await requireNetwork();
-      state.provider = new ethers.BrowserProvider(window.ethereum);
+      state.walletProvider=walletProvider;
+      state.provider = new ethers.BrowserProvider(walletProvider);
       state.signer = await state.provider.getSigner();
       state.account = await state.signer.getAddress();
       const balance = await state.provider.getBalance(state.account);
       $('owner1').value ||= state.account;
       checks('walletChecks',[[true,'Base Sepolia · chain ID 84532'],[true,'Connected: '+state.account],[balance>0n,'Test ETH balance: '+ethers.formatEther(balance)]]);
       $('createSafe').disabled=false;$('checkSafe').disabled=false;
+      if(!state.eventsBound){walletProvider.on?.('chainChanged',()=>location.reload());state.eventsBound=true;}
       log({status:'WALLET_CONNECTED',chainId:84532,account:state.account,testEth:ethers.formatEther(balance)});
     }
     async function switchNetwork(){
-      if(!window.ethereum) throw new Error('MetaMask was not detected.');
-      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN_HEX}]});}
-      catch(e){if(e.code!==4902)throw e;await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:CHAIN_HEX,chainName:'Base Sepolia',nativeCurrency:{name:'ETH',symbol:'ETH',decimals:18},rpcUrls:['https://sepolia.base.org'],blockExplorerUrls:['https://sepolia.basescan.org']} ]});}
+      const walletProvider=injectedProvider();
+      if(!walletProvider) throw new Error('MetaMask was not detected. Allow the MetaMask extension to access bvlvo.com, then reload.');
+      try{await walletProvider.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN_HEX}]});}
+      catch(e){if(e.code!==4902)throw e;await walletProvider.request({method:'wallet_addEthereumChain',params:[{chainId:CHAIN_HEX,chainName:'Base Sepolia',nativeCurrency:{name:'ETH',symbol:'ETH',decimals:18},rpcUrls:['https://sepolia.base.org'],blockExplorerUrls:['https://sepolia.basescan.org']} ]});}
       await connect();
     }
     async function validateInputs(){
@@ -189,9 +205,8 @@
       log({status:'BASE_SEPOLIA_REHEARSAL_DEPLOYED_PENDING_FULL_RECONCILIATION',chainId:84532,transactionHash:tx.hash,blockNumber:receipt.blockNumber,factory:factoryAddress,deploymentId,issuedAt,issuedAtUTC:new Date(issuedAt*1000).toISOString(),token,teamVesting,reserveVaults,safeController:address('safe'),teamBeneficiary:address('beneficiary'),expectedOwners:owners(),explorer:'https://sepolia.basescan.org/tx/'+tx.hash});
       $('deploy').disabled=true;
     }
-    const run=fn=>async()=>{try{await fn()}catch(e){log({status:'STOPPED',error:e.shortMessage||e.message||String(e)});}};
-    $('connect').onclick=run(connect);$('network').onclick=run(switchNetwork);$('createSafe').onclick=run(createSafe);$('checkSafe').onclick=run(checkSafe);$('prepare').onclick=run(prepare);$('deploy').onclick=run(deploy);
-    if(window.ethereum)window.ethereum.on?.('chainChanged',()=>location.reload());
+    const run=(fn,errorTarget)=>async()=>{try{await fn()}catch(e){const message=e.shortMessage||e.message||String(e);if(errorTarget)checks(errorTarget,[[false,message]]);log({status:'STOPPED',error:message});}};
+    $('connect').onclick=run(connect,'walletChecks');$('network').onclick=run(switchNetwork,'walletChecks');$('createSafe').onclick=run(createSafe);$('checkSafe').onclick=run(checkSafe);$('prepare').onclick=run(prepare);$('deploy').onclick=run(deploy);
   })();
   </script>
 </body>
