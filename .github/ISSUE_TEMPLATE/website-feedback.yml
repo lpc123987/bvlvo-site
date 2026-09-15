@@ -1,0 +1,25 @@
+name: Website feedback
+description: Report unclear content, a broken link or a usability problem. No wallet required.
+title: "[Website] "
+body:
+  - type: markdown
+    attributes:
+      value: "This is public. Do not include passwords, seed phrases, private keys, identity documents or private contact information. Submission does not guarantee a response or reward."
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: https://bvlvo.com/
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened and what did you expect?
+      description: Include reproduction steps and device/browser if relevant. Remove private information from screenshots.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement (optional)

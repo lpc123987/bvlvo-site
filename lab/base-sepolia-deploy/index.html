@@ -30,8 +30,8 @@
         <ul class="checks" id="walletChecks"><li>Wallet not connected.</li></ul>
       </article>
       <article class="panel">
-        <span class="step">02 / TEST ADDRESSES</span><h2>Set three owners</h2>
-        <p>Use test-only addresses. A single person may control all three for rehearsal, but that must never be described as independent custody.</p>
+        <span class="step">02 / TEST ADDRESSES</span><h2>Enter expected Safe owners</h2>
+        <p>These fields verify an existing Safe; editing them does not add or change its owners. Use test-only addresses. A single person may control all three for rehearsal, but that is not independent custody.</p>
         <div class="fields">
           <div class="field"><label for="owner1">Owner 1</label><input id="owner1" autocomplete="off" spellcheck="false" placeholder="0x…"></div>
           <div class="field"><label for="owner2">Owner 2</label><input id="owner2" autocomplete="off" spellcheck="false" placeholder="0x…"></div>
@@ -55,7 +55,9 @@
       <article class="panel wide">
         <span class="step">OBSERVED EVIDENCE</span><h2>Session record</h2>
         <p>Copy this record after deployment. A transaction hash proves only that a testnet transaction exists; deployment reconciliation remains required.</p>
-        <pre id="log">Ready. Connect MetaMask to begin.</pre>
+        <p id="operationStatus" role="status" aria-live="polite">Ready. No signature requested.</p>
+        <div class="actions"><button id="recover">Check saved transaction</button></div>
+        <pre id="log" tabindex="0">Ready. Connect MetaMask to begin.</pre>
         <p class="fine">Factory source: BVLVO Contract Prototype V0.3, Solidity 0.8.30, optimizer 200, viaIR, Shanghai target. This interface is operational tooling, not an independent security review.</p>
       </article>
     </section>
@@ -100,7 +102,13 @@
       || window.ethereum;
     const state = { provider:null, walletProvider:null, signer:null, account:null, artifact:null, safeOk:false, plan:null, eventsBound:false };
     const log = data => { $('log').textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2); };
-    const checks = (id, rows) => { $(id).innerHTML = rows.map(([ok,text]) => '<li class="'+(ok?'pass':'fail')+'">'+(ok?'✓ ':'✕ ')+text+'</li>').join(''); };
+    const checks = (id, rows) => { $(id).replaceChildren(...rows.map(([ok,text]) => { const li=document.createElement('li');li.className=ok?'pass':'fail';li.textContent=(ok?'✓ ':'✕ ')+text;return li; })); };
+    const recordKey='bvlvo:deployment:84532';
+    let busy=false, revision=0;
+    function savedRecord(){try{return JSON.parse(localStorage.getItem(recordKey)||'null');}catch{return {status:'STORAGE_UNAVAILABLE'};}}
+    function saveRecord(record){localStorage.setItem(recordKey,JSON.stringify(record));}
+    function walletChanged(){revision++;invalidate();state.signer=null;state.account=null;$('checkSafe').disabled=true;checks('walletChecks',[[false,'Wallet changed or disconnected. Connect again and repeat verification.']]);}
+    async function requireSession(){await requireNetwork();const accounts=await state.walletProvider?.request({method:'eth_accounts'});if(!state.account||!accounts?.length||accounts[0].toLowerCase()!==state.account.toLowerCase()){walletChanged();throw new Error('Wallet account changed. Connect again.');}}
     const inputIds = ['owner1','owner2','owner3','beneficiary','safe'];
     const address = (id) => {
       try { return ethers.getAddress($(id).value.trim()); }
@@ -120,6 +128,7 @@
       return walletProvider;
     }
     async function connect(){
+      invalidate();
       const walletProvider=injectedProvider();
       if(!walletProvider) throw new Error('MetaMask was not detected. Allow the MetaMask extension to access bvlvo.com, then reload.');
       await walletProvider.request({method:'eth_requestAccounts'});
@@ -132,7 +141,7 @@
       if(!$('owner1').value){$('owner1').value=state.account;sessionStorage.setItem('bvlvo:owner1',state.account);}
       checks('walletChecks',[[true,'Base Sepolia · chain ID 84532'],[true,'Connected: '+state.account],[balance>0n,'Test ETH balance: '+ethers.formatEther(balance)]]);
       $('checkSafe').disabled=false;
-      if(!state.eventsBound){walletProvider.on?.('chainChanged',()=>location.reload());state.eventsBound=true;}
+      if(!state.eventsBound){walletProvider.on?.('chainChanged',walletChanged);walletProvider.on?.('accountsChanged',walletChanged);walletProvider.on?.('disconnect',walletChanged);state.eventsBound=true;}
       log({status:'WALLET_CONNECTED',chainId:84532,account:state.account,testEth:ethers.formatEther(balance)});
     }
     async function switchNetwork(){
@@ -155,6 +164,7 @@
       if(handlerCode==='0x'||ethers.keccak256(handlerCode)!==FALLBACK_HANDLER_CODEHASH) throw new Error('Compatibility fallback handler code hash mismatch.');
     }
     async function checkSafe(){
+      const startedRevision=revision;invalidate();await requireSession();
       await requireNetwork();const {list}=await validateInputs();await verifyOfficialSafeContracts();const safeAddress=address('safe');
       const code=await state.provider.getCode(safeAddress);if(code==='0x')throw new Error('No contract exists at the Safe address.');
       const safe=new ethers.Contract(safeAddress,SAFE_ABI,state.provider);
@@ -172,26 +182,32 @@
         [BigInt(guard)===0n,'No guard'],
         [ethers.getAddress('0x'+fallback.slice(-40)).toLowerCase()===FALLBACK_HANDLER.toLowerCase(),'Approved compatibility fallback handler']
       ];
+      await requireSession();if(startedRevision!==revision)throw new Error('Wallet changed during Safe verification. Start again.');
       checks('safeChecks',rows);state.safeOk=rows.every(x=>x[0]);$('prepare').disabled=!state.safeOk;$('deploy').disabled=true;
       if(!state.safeOk)throw new Error('Safe configuration does not satisfy the V0.3 policy.');
       log({status:'SAFE_PREFLIGHT_PASSED',safe:safeAddress,singleton,owners:actual,threshold:Number(threshold),modules,guard,fallbackHandler:ethers.getAddress('0x'+fallback.slice(-40))});
     }
     async function prepare(){
-      await requireNetwork();if(!state.safeOk)await checkSafe();const {list,beneficiary}=await validateInputs();
+      const startedRevision=revision;await requireSession();await checkSafe();const {list,beneficiary}=await validateInputs();
       state.artifact ||= await fetch('./factory-artifact.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Factory artifact could not be loaded.');return r.json()});
       const bytecode=state.artifact.bytecode.startsWith('0x')?state.artifact.bytecode:'0x'+state.artifact.bytecode;
       const factory=new ethers.ContractFactory(state.artifact.abi,bytecode,state.signer);
       const unsigned=await factory.getDeployTransaction(address('safe'),beneficiary,list,SAFE_SINGLETON,FALLBACK_HANDLER);
       const estimatedGas=await state.provider.estimateGas({...unsigned,from:state.account});
+      await requireSession();if(startedRevision!==revision)throw new Error('Wallet changed during verification. Start again.');
       state.plan={factory,arguments:[address('safe'),beneficiary,list,SAFE_SINGLETON,FALLBACK_HANDLER],estimatedGas,bytecodeHash:ethers.keccak256(bytecode),dataHash:ethers.keccak256(unsigned.data)};
       $('deploy').disabled=false;
       log({status:'FACTORY_TRANSACTION_PREPARED_UNSIGNED',chainId:84532,from:state.account,to:null,value:'0',safe:address('safe'),teamBeneficiary:beneficiary,expectedOwners:list,expectedSingleton:SAFE_SINGLETON,expectedFallbackHandler:FALLBACK_HANDLER,estimatedGas:estimatedGas.toString(),factoryCreationBytecodeHash:state.plan.bytecodeHash,transactionDataHash:state.plan.dataHash});
     }
     async function deploy(){
+      if(savedRecord())throw new Error('A saved deployment attempt exists. Check its transaction before any new deployment.');
       await prepare();
       const {factory,arguments:args,estimatedGas}=state.plan;
+      await requireSession();
+      saveRecord({status:'AWAITING_WALLET',chainId:84532,account:state.account,createdAt:new Date().toISOString()});
       const contract=await factory.deploy(...args,{gasLimit:estimatedGas*120n/100n});
       const tx=contract.deploymentTransaction();
+      try{saveRecord({status:'BROADCAST',chainId:84532,transactionHash:tx.hash});}catch{throw new Error('Transaction sent: '+tx.hash+'. Browser storage failed. Save this hash and inspect it before any retry.');}
       log({status:'FACTORY_TRANSACTION_SENT',chainId:84532,transactionHash:tx.hash,value:'0'});
       await contract.waitForDeployment();const receipt=await tx.wait();const factoryAddress=await contract.getAddress();
       const token=await contract.token(),teamVesting=await contract.teamVesting(),issuedAt=Number(await contract.issuedAt()),deploymentId=await contract.deploymentId();
@@ -199,8 +215,10 @@
       log({status:'BASE_SEPOLIA_REHEARSAL_DEPLOYED_PENDING_FULL_RECONCILIATION',chainId:84532,transactionHash:tx.hash,blockNumber:receipt.blockNumber,factory:factoryAddress,deploymentId,issuedAt,issuedAtUTC:new Date(issuedAt*1000).toISOString(),token,teamVesting,reserveVaults,safeController:address('safe'),teamBeneficiary:address('beneficiary'),expectedOwners:owners(),explorer:'https://sepolia.basescan.org/tx/'+tx.hash});
       $('deploy').disabled=true;
     }
-    const run=(fn,errorTarget)=>async()=>{try{await fn()}catch(e){const message=e.shortMessage||e.message||String(e);if(errorTarget)checks(errorTarget,[[false,message]]);log({status:'STOPPED',error:message});}};
+    async function recover(){await requireSession();const record=savedRecord();if(!record){log('No saved deployment attempt in this browser.');return;}if(!record.transactionHash){log({...record,nextStep:'Check MetaMask Activity and the connected account on Base Sepolia explorer. The outcome is unknown; do not deploy again. Provide the transaction hash for review.'});return;}const receipt=await state.provider.getTransactionReceipt(record.transactionHash);log({...record,status:receipt?(receipt.status===1?'CONFIRMED_PENDING_RECONCILIATION':'REVERTED'):'PENDING_OR_NOT_FOUND',blockNumber:receipt?.blockNumber,explorer:'https://sepolia.basescan.org/tx/'+record.transactionHash,nextStep:'Keep this record. Confirmation is not full deployment reconciliation.'});}
+    const run=(fn,errorTarget)=>async()=>{if(busy)return;busy=true;const controls=[...document.querySelectorAll('button,input')];const previous=controls.map(el=>el.disabled);controls.forEach(el=>el.disabled=true);$('operationStatus').textContent='Working. Do not submit again.';try{await fn();$('operationStatus').textContent='Step completed. Review the session record.';}catch(e){invalidate();const rejected=e.code===4001||e.code==='ACTION_REJECTED';if(rejected&&fn===deploy&&savedRecord()?.status==='AWAITING_WALLET')localStorage.removeItem(recordKey);const message=e.shortMessage||e.message||String(e);const nextStep=rejected?'Request rejected. No new approval is required unless you choose to retry.':e.code==='INSUFFICIENT_FUNDS'?'Use test ETH only; check the Base Sepolia balance.':savedRecord()?'Check saved transaction and MetaMask Activity before retrying.':'Reconnect and repeat Safe verification. Do not bypass a failed check.';if(errorTarget)checks(errorTarget,[[false,message]]);log({status:rejected?'REQUEST_REJECTED':'ACTION_STOPPED',error:message,nextStep,savedDeployment:savedRecord()});$('operationStatus').textContent=nextStep;}finally{busy=false;controls.forEach((el,i)=>el.disabled=previous[i]);$('connect').disabled=false;$('network').disabled=false;$('recover').disabled=!state.account;$('checkSafe').disabled=!state.account;$('prepare').disabled=!state.safeOk;$('deploy').disabled=!state.plan||!!savedRecord();}};
     $('connect').onclick=run(connect,'walletChecks');$('network').onclick=run(switchNetwork,'walletChecks');$('checkSafe').onclick=run(checkSafe);$('prepare').onclick=run(prepare);$('deploy').onclick=run(deploy);
+    $('recover').onclick=run(recover);if(savedRecord())log({status:'SAVED_ATTEMPT_FOUND',record:savedRecord(),nextStep:'Connect and check saved transaction. Do not deploy again.'});
   })();
   </script>
 </body>
