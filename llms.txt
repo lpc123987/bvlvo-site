@@ -1,10 +1,10 @@
 # BVLVO
 
-> BVLVO is an early-stage research project exploring an open economic protocol for Personal AI Economy / Machine Labor Economy. The current editorial parent is Research V1.1; 13 independent papers are V0.2 drafts; the proposed Personal AI prototype is V0.1 and has not been implemented or run.
+> BVLVO is an early-stage protocol research initiative exploring the economic layer for Personal AI. The current research framework is V1.1; independent papers are V0.2 working drafts; the proposed Personal AI prototype is V0.1 and has not been implemented or run.
 
 ## Current research
 - [Overview](https://bvlvo.com/): BVLVO — The Economic Layer for Personal AI.
-- [Research V1.1](https://bvlvo.com/research/): Research framework, 13-paper index, current question, related work and revision record.
+- [Research Framework](https://bvlvo.com/research/): Current question, 12 research fields, selected principles and publication boundaries.
 - [Research and development](https://bvlvo.com/development/): Current development status and preserved engineering history.
 - [Status and disclosures](https://bvlvo.com/disclosures/): Research limits, project status, archived material and authenticity guidance.
 
@@ -14,12 +14,13 @@
 - Not finding a precedent does not establish originality.
 - The proposed Personal AI prototype has not produced experimental results.
 - No production protocol, official token, public network, sale or purchase route exists.
-- Token necessity remains an open research question; a no-token path remains in scope.
+- BVLVO is researching a native economic medium for Personal AI work, skills, machine resources and verification.
+- No official mainnet asset exists and no public sale is currently being offered.
 - No completed legal review, production security audit or compatibility certification is claimed.
 
 ## Historical engineering archive
 - [Testnet engineering record](https://bvlvo.com/development/testnet-status/): Earlier token, vesting and reserve-control rehearsal evidence. It is not the current product roadmap, a production deployment or an independent audit.
-- Earlier token, governance, treasury, issuance and task pages are superseded research records. Their dates, allocations and parameters are not current commitments.
+- Earlier token, governance, treasury, issuance and task files are superseded repository records, not current public product pages. Their dates, allocations and parameters are not commitments.
 
 ## Language
 English

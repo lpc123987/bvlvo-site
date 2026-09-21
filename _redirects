@@ -2,6 +2,24 @@ https://www.bvlvo.com/* https://bvlvo.com/:splat 301
 /en / 301
 /en/ / 301
 
+/token /research/ 302
+/token/* /research/ 302
+/token-research /research/ 302
+/token-research/* /research/ 302
+/whitepaper /research/ 302
+/whitepaper/* /research/ 302
+/roadmap /research/ 302
+/roadmap/* /research/ 302
+/governance /research/ 302
+/governance/* /research/ 302
+/treasury /research/ 302
+/treasury/* /research/ 302
+/docs/issuance-specification-v1.md /development/testnet-status/ 302
+/docs/token-design.md /development/testnet-status/ 302
+/docs/weekly-plan.md /development/testnet-status/ 302
+/docs/review-task-001-calendar-vesting.md /development/testnet-status/ 302
+/docs/task-001-operations.md /development/testnet-status/ 302
+
 /zh / 301
 /zh/ / 301
 /zh/* /:splat 301
