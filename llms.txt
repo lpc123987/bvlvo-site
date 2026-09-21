@@ -1,22 +1,25 @@
 # BVLVO
 
-> BVLVO is a long-term community token project in preparation. Planned issuance: 2026-09-23, subject to required permissions and launch readiness. V1 selects Base, ERC-20 with 18 decimals, a one-billion-token supply, zero public circulation at genesis, team releases at monthly anniversaries 13 through 60, and 2-of-3 reserve signing with an enforced 72-hour delay. These controls exist only in a developer-tested prototype and superseded Base Sepolia test artifacts. No official token contract, sale, purchase route or live holder governance exists. Ten years is an ambition, not a guarantee.
+> BVLVO is an early-stage research project exploring an open economic protocol for Personal AI Economy / Machine Labor Economy. The current editorial parent is Research V1.1; 13 independent papers are V0.2 drafts; the proposed Personal AI prototype is V0.1 and has not been implemented or run.
 
-## Current proposal
-- [Overview](https://bvlvo.com/): Current project thesis, issuance specification V1 and preparation status.
-- [token](https://bvlvo.com/token/): Issuance specification V1: Base, one billion BVLVO, zero public circulation at genesis, defined vesting and reserve controls. In preparation.
-- [governance](https://bvlvo.com/governance/): Simple participation, defined decision boundaries and transparent execution. Governance remains a proposal.
-- [treasury](https://bvlvo.com/treasury/): Separate cash, token allocations and test points. No invented balances or implied financial backing.
-- [development](https://bvlvo.com/development/): A ten-year ambition supported by staged decisions, evidence and honest progress reporting.
-- [whitepaper](https://bvlvo.com/whitepaper/): Working paper v0.4: community thesis, token design, governance boundaries and open questions.
-- [disclosures](https://bvlvo.com/disclosures/): Read the limits of the BVLVO proposal, issuance status, project dependencies and website data practices.
-- [V0.3 testnet status](https://bvlvo.com/docs/testnet-status-v0.3.md): Local test results, verified Safe migration evidence, current unsigned factory preflight and explicit limitations.
+## Current research
+- [Overview](https://bvlvo.com/): BVLVO — The Economic Layer for Personal AI.
+- [Research V1.1](https://bvlvo.com/research/): Research framework, 13-paper index, current question, related work and revision record.
+- [Research and development](https://bvlvo.com/development/): Current development status and preserved engineering history.
+- [Status and disclosures](https://bvlvo.com/disclosures/): Research limits, project status, archived material and authenticity guidance.
+
+## Research boundaries
+- Design principles are project constraints, not claims of originality or implementation.
+- Finding related work does not make the complete proposal non-original.
+- Not finding a precedent does not establish originality.
+- The proposed Personal AI prototype has not produced experimental results.
+- No production protocol, official token, public network, sale or purchase route exists.
+- Token necessity remains an open research question; a no-token path remains in scope.
+- No completed legal review, production security audit or compatibility certification is claimed.
+
+## Historical engineering archive
+- [Testnet engineering record](https://bvlvo.com/development/testnet-status/): Earlier token, vesting and reserve-control rehearsal evidence. It is not the current product roadmap, a production deployment or an independent audit.
+- Earlier token, governance, treasury, issuance and task pages are superseded research records. Their dates, allocations and parameters are not current commitments.
 
 ## Language
 English
-
-## Early experiments and history
-- [WORLD](https://bvlvo.com/lab/): deterministic simulator, not real AI.
-- [Task 001](https://bvlvo.com/tasks/): non-monetary test points, no token entitlement.
-- [Internal rehearsal](https://github.com/lpc123987/bvlvo-site/issues/1): same-assistant self-check, not independent review.
-- /roadmap/, /token-research/ and the original /docs/token-design.md are historical research proposals. Their parameters are not a live issuance arrangement.
