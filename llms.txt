@@ -1,26 +1,24 @@
-# BVLVO
+# BVLVO — The Economic Layer for Personal AI
 
-> BVLVO is an early-stage protocol research initiative exploring the economic layer for Personal AI. The current research framework is V1.1; independent papers are V0.2 working drafts; the proposed Personal AI prototype is V0.1 and has not been implemented or run.
+BVLVO is a research initiative exploring the economic protocols for persistent Personal AI — identity, capability, authority, trust and useful work.
 
-## Current research
-- [Overview](https://bvlvo.com/): BVLVO — The Economic Layer for Personal AI.
-- [Research Framework](https://bvlvo.com/research/): Current question, 12 research fields, selected principles and publication boundaries.
-- [Research and development](https://bvlvo.com/development/): Current development status and preserved engineering history.
-- [Status and disclosures](https://bvlvo.com/disclosures/): Research limits, project status, archived material and authenticity guidance.
+## Current Phase: Research Validation
+The first theoretical framework has been established. Current work focuses on prior-art validation, formal models, reproducible benchmarks and protocol experiments.
+- Framework: Research Draft.
+- Paper 01, Principal-Need-Shaped Personal AI: Formal Research / Benchmark Design.
+- Paper 02, Bounded Autonomy for Personal AI: Research Draft.
+- Paper 03, Machine Trust Without a Universal Reputation Score: Research Draft.
+- Planned research is not published research. No completed benchmark results or Personal AI protocol experiments are reported.
 
-## Research boundaries
-- Design principles are project constraints, not claims of originality or implementation.
-- Finding related work does not make the complete proposal non-original.
-- Not finding a precedent does not establish originality.
-- The proposed Personal AI prototype has not produced experimental results.
-- No production protocol, official token, public network, sale or purchase route exists.
-- BVLVO is researching a native economic medium for Personal AI work, skills, machine resources and verification.
-- No official mainnet asset exists and no public sale is currently being offered.
-- No completed legal review, production security audit or compatibility certification is claimed.
+## Public pages
+- [Overview](https://bvlvo.com/)
+- [Research Program](https://bvlvo.com/research/)
+- [Docs](https://bvlvo.com/docs/)
+- [Development history](https://bvlvo.com/development/)
+- [Status and disclosures](https://bvlvo.com/disclosures/)
+- [Historical testnet evidence](https://bvlvo.com/development/testnet-status/)
 
-## Historical engineering archive
-- [Testnet engineering record](https://bvlvo.com/development/testnet-status/): Earlier token, vesting and reserve-control rehearsal evidence. It is not the current product roadmap, a production deployment or an independent audit.
-- Earlier token, governance, treasury, issuance and task files are superseded repository records, not current public product pages. Their dates, allocations and parameters are not commitments.
-
-## Language
-English
+## Boundaries
+Adopted principles do not establish originality. Related work overlap does not settle whole-proposal originality; absence of a found precedent does not establish originality. Technical mechanisms and full manuscripts are reserved for separate reviewed releases. No final specification, legal clearance, production audit or robot compatibility is claimed.
+BVLVO is researching a native economic medium for Personal AI work, capabilities, machine resources and verification. No official mainnet asset exists. No public sale is currently being offered.
+Earlier experimental work informed the current research direction; archived dates and parameters are not current commitments.

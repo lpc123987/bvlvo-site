@@ -1,5 +1,7 @@
-# BVLVO historical research record
+# Historical BVLVO research
 
-This legacy document has been retired from the public English website. See the current token plan: https://bvlvo.com/token/
+This earlier experimental document has been retired from the current website. Historical revisions remain in repository history. They are not current issuance parameters, commitments or a validated Personal AI protocol.
 
-Earlier simulations and task points do not create token entitlements.
+Current Research Program: https://bvlvo.com/research/
+
+Historical engineering record: https://bvlvo.com/development/testnet-status/
