@@ -3,14 +3,16 @@
 BVLVO is a research initiative exploring the economic protocols for persistent Personal AI — identity, capability, authority, trust and useful work.
 
 ## Current Phase: Research Validation
-The first theoretical framework has been established. Current work focuses on prior-art validation, formal models, reproducible benchmarks and protocol experiments.
+The first theoretical framework has been established. Current work is focused on formal definitions, prior-art validation and rigorous experimental methodology for persistent Personal AI.
 - Framework: Research Draft.
-- Paper 01, Principal-Need-Shaped Personal AI: Formal Research / Benchmark Design.
+- Paper 01, Principal-Need-Shaped Personal AI: Methodology Validation.
 - Paper 02, Bounded Autonomy for Personal AI: Research Draft.
 - Paper 03, Machine Trust Without a Universal Reputation Score: Research Draft.
-- Planned research is not published research. No completed benchmark results or Personal AI protocol experiments are reported.
+- Planned research is not published research. Exploratory simulations are completed. Methodology is under validation. Confirmatory experiments are not completed; real-human longitudinal validation is not established. Pilot results calibrate methodology and do not confirm the theory.
 
 ## Public pages
+- [Paper 01 and NT-CIE concept](https://bvlvo.com/research/paper-01/)
+- [Research Before Claims](https://bvlvo.com/research/notes/)
 - [Overview](https://bvlvo.com/)
 - [Research Program](https://bvlvo.com/research/)
 - [Docs](https://bvlvo.com/docs/)
