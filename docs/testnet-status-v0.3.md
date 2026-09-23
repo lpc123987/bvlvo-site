@@ -1,8 +1,10 @@
+> ARCHIVED / HISTORICAL PROTOTYPE. This record describes earlier experimental work that informed the current research direction. It is not current chain-state verification, a launch plan or evidence validating Personal AI theory. Current program: https://bvlvo.com/research/
+
 # BVLVO Testnet Engineering Status — V0.3
 
 **Status date:** 14 September 2026  
 **Scope:** Base Sepolia and local development only  
-**Status:** Pre-launch, not issued, not audited
+**Status:** Historical testnet engineering record — not a current launch plan or independent audit
 
 ## What has been completed
 
@@ -24,7 +26,7 @@ The migration transaction is testnet control-account evidence only. The earlier 
 
 ## Current gate
 
-The next engineering action is a user-reviewed V0.3 factory rehearsal on Base Sepolia using test assets. Immediately before signing, the live Safe singleton, handler, owner set, threshold, modules, guard, constructor inputs, bytecode and estimated gas must be checked again.
+At the historical evidence cutoff, the proposed next engineering action was a user-reviewed V0.3 factory rehearsal on Base Sepolia using test assets. Immediately before signing, the live Safe singleton, handler, owner set, threshold, modules, guard, constructor inputs, bytecode and estimated gas must be checked again.
 
 The V0.3 factory constructor creates testnet token contracts. The connected user must personally review and approve the wallet confirmation. No password, seed phrase, private key or verification code is required by the project website or development process.
 
@@ -40,4 +42,4 @@ The V0.3 factory constructor creates testnet token contracts. The connected user
 
 No V0.3 contract has been deployed to Base Sepolia. No official token contract exists. No Base Mainnet issuance, sale, public distribution, liquidity pool, trading market, bridge or exchange integration has been created. No independent audit, legal approval, signer-independence proof, operating-funding proof or production-readiness approval is represented.
 
-The planned 23 September 2026 issuance date remains conditional. It is not proof that issuance will occur on that date, and it must be postponed if required permissions, responsible operation, funding, custody and security-review gates are not met.
+The earlier 23 September 2026 issuance plan has been superseded. It is not a current launch date or commitment. No public sale is currently being offered.
